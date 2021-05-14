@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 
 fields = (
 	'Población inicial',
@@ -7,6 +8,14 @@ fields = (
 	'Prob de mutación de población',
 	'Prob de mutación de individuo'
 )
+
+def validModelation(input):
+    if input.isdigit():
+        return True
+    else:
+        messagebox.showerror('Error en modelación', 'Se esperaba un tipo de dato: Integer')
+        return False
+
 
 def start(entries):
 	print('Start Algorithm')
@@ -18,8 +27,7 @@ def makeform(root, fields):
     for field in fields:
       row = Frame(root)
       lab = Label(row, width=30, text=field+": ", anchor='w')
-      ent = Entry(row)
-      ent.insert(0,"0")
+      ent = Entry(row, validate="key", validatecommand=(row.register(validModelation), '%P'))
       row.pack(side = TOP, fill = X, padx = 5 , pady = 5)
       lab.pack(side = LEFT)
       ent.pack(side = RIGHT, expand = YES, fill = X)
