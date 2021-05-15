@@ -1,8 +1,12 @@
 from tkinter import *
 from tkinter import messagebox
+import random 
+import math
 
 # globals
 root = Tk()
+individues = []
+selection = []
 
 fields = (
     'Población inicial',
@@ -16,19 +20,39 @@ fields = (
     'Prob de mutación de individuo'
 )
 
+def printList(list):
+    for i in range(len(list)):
+        print(list[i])
+
+def createIndividuals(pob, bits):
+    cadena = ''
+    aux = []
+    for i in range(pob):
+        cadena = ''
+        for j in range(bits):
+            cadena += str(random.randint(0,1))
+        aux.append(cadena)
+    return aux
+
+def start(entries):
+    global individues
+    global selection
+    rango = abs(int(entries['Rango máximo de X'].get()) - int(entries['Rango mínimo de X'].get()))
+    Dx = (rango / int(entries['Población inicial'].get()))
+    info = 'X mínimo: ', entries['Rango mínimo de X'].get(), ', X máximo: ', entries['Rango máximo de X'].get(), ', Dx: ', Dx
+    print(info)
+    individues = createIndividuals(int(entries['Población inicial'].get()), int(entries['Tamaño de cadena de bits'].get()))
+    for i in range(int(entries['Población inicial'].get())):
+        dictPob = {'ID':i+1, 'bits': individues[i], 'decimal': int(individues[i], 2), 'X': 0, 'Fitness': 0}
+        selection.append(dictPob)
+    printList(selection)
+
 def validModelation(input):
     if input.isdigit():
         return True
     else:
         messagebox.showerror('Error en modelación', 'Se esperaba un tipo de dato: Integer')
         return False
-
-def start(entries):
-    rango = abs(int(entries['Rango máximo de X'].get()) - int(entries['Rango mínimo de X'].get()))
-    Dx = (rango / int(entries['Población inicial'].get()))
-    info = 'X mínimo: ', entries['Rango mínimo de X'].get(), ', X máximo: ', entries['Rango máximo de X'].get(), ', Dx: ', Dx
-    print(info)
-
 
 def makeform(root, fields):
     title = Label(root, text="Inicialización", width=20, font=("bold",20))
