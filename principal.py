@@ -20,6 +20,9 @@ fields = (
     'Prob de mutación de individuo'
 )
 
+def findX(a, Dx, decimal):
+    return a + (decimal * Dx)
+
 def printList(list):
     for i in range(len(list)):
         print(list[i])
@@ -34,18 +37,22 @@ def createIndividuals(pob, bits):
         aux.append(cadena)
     return aux
 
-def start(entries):
+def initializaciion(inp):
     global individues
     global selection
-    rango = abs(int(entries['Rango máximo de X'].get()) - int(entries['Rango mínimo de X'].get()))
-    Dx = (rango / int(entries['Población inicial'].get()))
-    info = 'X mínimo: ', entries['Rango mínimo de X'].get(), ', X máximo: ', entries['Rango máximo de X'].get(), ', Dx: ', Dx
+    rango = abs(int(inp['Rango máximo de X'].get()) - int(inp['Rango mínimo de X'].get()))
+    Dx = (rango / int(inp['Población inicial'].get()))
+    info = 'X mínimo: ', inp['Rango mínimo de X'].get(), ', X máximo: ', inp['Rango máximo de X'].get(), ', Dx: ', Dx
     print(info)
-    individues = createIndividuals(int(entries['Población inicial'].get()), int(entries['Tamaño de cadena de bits'].get()))
-    for i in range(int(entries['Población inicial'].get())):
-        dictPob = {'ID':i+1, 'bits': individues[i], 'decimal': int(individues[i], 2), 'X': 0, 'Fitness': 0}
+    individues = createIndividuals(int(inp['Población inicial'].get()), int(inp['Tamaño de cadena de bits'].get()))
+    for i in range(int(inp['Población inicial'].get())):
+        auxX = findX(int(inp['Rango mínimo de X'].get()), Dx, int(individues[i],2))
+        dictPob = {'ID':i+1, 'bits': individues[i], 'decimal': int(individues[i], 2), 'X': auxX, 'Fitness': 0}
         selection.append(dictPob)
     printList(selection)
+
+def start(entries):
+    initializaciion(entries)
 
 def validModelation(input):
     if input.isdigit():
