@@ -31,10 +31,14 @@ def printList(list):
 def findFitness(x, y):
     return x**2 + y**3 # z = f(x) = x² + y³
 
-def findX(a, Dx, decimal):
+def findX(a, b, n, decimal):
+    rangoX = abs(b - a)
+    Dx = (rangoX / n)
     return a + (decimal * Dx)
 
-def findY(a, Dy, decimal):
+def findY(a, b, n, decimal):
+    rangoY = abs(b - a)
+    Dy = (rangoY / n)
     return a + (decimal * Dy)
 
 def crossover(inp):
@@ -55,6 +59,13 @@ def crossover(inp):
         lCrossover[i+1]['puntoC'] = pointCrossover
         lCrossover[i]['cruzaR'] = bit1
         lCrossover[i+1]['cruzaR'] = bit2
+        lCrossover[i]['decimal'] = int(bit1, 2)
+        lCrossover[i+1]['decimal'] = int(bit2, 2)
+
+    for i in range(len(lCrossover)):
+        lCrossover[i]['X'] = findX(int(inp['Rango mínimo de X'].get()), int(inp['Rango máximo de X'].get()), int(inp['Tamaño de cadena de bits'].get()), lCrossover[i]['decimal'])
+        lCrossover[i]['Y'] = findY(int(inp['Rango mínimo de Y'].get()), int(inp['Rango máximo de Y'].get()), int(inp['Tamaño de cadena de bits'].get()), lCrossover[i]['decimal'])
+        lCrossover[i]['Fitness'] = findFitness(lCrossover[i]['X'], lCrossover[i]['Y'])
     printList(lCrossover)
 
 def selection():
@@ -118,20 +129,11 @@ def inicializacion(inp):
     global bits
     global lSelection
     global contPob
-    rangoX = abs(int(inp['Rango máximo de X'].get()) - int(inp['Rango mínimo de X'].get()))
-    Dx = (rangoX / int(inp['Tamaño de cadena de bits'].get()))
-    rangoY = abs(int(inp['Rango máximo de Y'].get()) - int(inp['Rango mínimo de Y'].get()))
-    Dy = (rangoY / int(inp['Tamaño de cadena de bits'].get()))
-    infoX = 'X mínimo: ', inp['Rango mínimo de X'].get(), ', X máximo: ', inp['Rango máximo de X'].get(), ', Dx: ', Dx
-    infoY = 'Y mínimo: ', inp['Rango mínimo de Y'].get(), ', Y máximo: ', inp['Rango máximo de Y'].get(), ', Dy: ', Dy
-    print(infoX)
-    print(infoY)
     bits = createIndividuals(int(inp['Población inicial'].get()), int(inp['Tamaño de cadena de bits'].get()))
     for i in range(int(inp['Población inicial'].get())):
-        auxX = findX(int(inp['Rango mínimo de X'].get()), Dx, int(bits[i],2))
-        auxY = findY(int(inp['Rango mínimo de Y'].get()), Dy, int(bits[i],2))
-        auxFitness = findFitness(auxX, auxY)
-        dictPob = {'ID':i+1, 'bits': bits[i], 'decimal': int(bits[i], 2), 'X': auxX, 'Y': auxY, 'Fitness': auxFitness, 'Prob': 0, 'Conteo': 0}
+        auxX = findX(int(inp['Rango mínimo de X'].get()), int(inp['Rango máximo de X'].get()), int(inp['Tamaño de cadena de bits'].get()), int(bits[i], 2))
+        auxY = findY(int(inp['Rango mínimo de Y'].get()), int(inp['Rango máximo de Y'].get()), int(inp['Tamaño de cadena de bits'].get()), int(bits[i], 2))
+        dictPob = {'ID':i+1, 'bits': bits[i], 'decimal': int(bits[i], 2), 'X': auxX, 'Y': auxY, 'Fitness': findFitness(auxX, auxY), 'Prob': 0, 'Conteo': 0}
         lSelection.append(dictPob)
         contPob += 1
 
