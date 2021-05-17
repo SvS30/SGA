@@ -82,8 +82,10 @@ def inicializacion(inp):
     Dx = (rangoX / int(inp['Tamaño de cadena de bits'].get()))
     rangoY = abs(int(inp['Rango máximo de Y'].get()) - int(inp['Rango mínimo de Y'].get()))
     Dy = (rangoY / int(inp['Tamaño de cadena de bits'].get()))
-    info = 'X mínimo: ', inp['Rango mínimo de X'].get(), ', X máximo: ', inp['Rango máximo de X'].get(), ', Dx: ', Dx, ', Dy: ', Dy
-    print(info)
+    infoX = 'X mínimo: ', inp['Rango mínimo de X'].get(), ', X máximo: ', inp['Rango máximo de X'].get(), ', Dx: ', Dx
+    infoY = 'Y mínimo: ', inp['Rango mínimo de Y'].get(), ', Y máximo: ', inp['Rango máximo de Y'].get(), ', Dy: ', Dy
+    print(infoX)
+    print(infoY)
     bits = createIndividuals(int(inp['Población inicial'].get()), int(inp['Tamaño de cadena de bits'].get()))
     for i in range(int(inp['Población inicial'].get())):
         auxX = findX(int(inp['Rango mínimo de X'].get()), Dx, int(bits[i],2))
