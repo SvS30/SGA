@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import random 
 import math
+import numpy as np
 
 # globals
 root = Tk()
@@ -51,9 +52,12 @@ def evaluation():
     global selection
     totFitness = 0
     promFitness = 0
-
     for i in range(len(individuals)):
         totFitness += individuals[i]['Fitness']
+    for i in range(len(individuals)):
+        individuals[i]['Prob'] = individuals[i]['Fitness'] / totFitness
+    
+    printList(individuals)
     print('Sum fitness: ',totFitness)
     print('Prom fitness: ',(totFitness/len(individuals)))
 
@@ -75,7 +79,6 @@ def inicializacion(inp):
         dictPob = {'ID':i+1, 'bits': bits[i], 'decimal': int(bits[i], 2), 'X': auxX, 'Y': auxY, 'Fitness': auxFitness, 'Prob': 0, 'Conteo': 0}
         individuals.append(dictPob)
         contPob += 1
-    printList(individuals)
 
 def start(entries):
     inicializacion(entries)
