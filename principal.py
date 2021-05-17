@@ -7,8 +7,8 @@ import numpy as np
 # globals
 root = Tk()
 bits = []
-selection = []
-crossover = []
+lSelection = []
+lCrossover = []
 contPob = 0
 
 fields = (
@@ -28,51 +28,53 @@ def printList(list):
     for i in range(len(list)):
         print(list[i])
 
+
 def selection():
-    global selection
-    global crossover
+    global lSelection
+    global lCrossover
     position = 0
-    for i in range(len(selection)):
-        if selection[i]['Conteo'] != 0:
-            for j in range(len(selection[i]['Conteo'])):
-                dictCross= {'ID':position+1, 'bitsP': selection[i]['bits'], 'puntoC': 0, 'cruzaR': 0, 'X': 0, 'Y': 0, 'Fitness': 0}
-                crossover[position].append(dictCross)
+    for i in range(len(lSelection)):
+        if lSelection[i]['Conteo'] != 0:
+            for j in range(lSelection[i]['Conteo']):
+                dictCross = {'ID':position+1, 'bitsP': lSelection[i]['bits'], 'puntoC': 0, 'cruzaR': 0, 'decimal': 0, 'X': 0, 'Y': 0, 'Fitness': 0}
+                lCrossover.append(dictCross)
+                position += 1
 
 def getProbAcu(limit):
-    global selection
+    global lSelection
     a = 0
     for i in range(0, limit, 1):
-        a += selection[i]['Prob']
+        a += lSelection[i]['Prob']
     return a
 
 def evaluation(inp):
-    global selection
+    global lSelection
     global contPob
     totFitness = 0
     promFitness = 0
-    for i in range(len(selection)):
-        totFitness += selection[i]['Fitness']
-    for i in range(len(selection)):
-        selection[i]['Prob'] = selection[i]['Fitness'] / totFitness
+    for i in range(len(lSelection)):
+        totFitness += lSelection[i]['Fitness']
+    for i in range(len(lSelection)):
+        lSelection[i]['Prob'] = lSelection[i]['Fitness'] / totFitness
     auxPob = int(inp['Población máxima'].get()) - int(inp['Población inicial'].get())
     randNumbers = np.random.rand(auxPob)
-    printList(selection)
+    printList(lSelection)
     print('Sum fitness: ',totFitness)
-    print('Prom fitness: ',(totFitness/len(selection)))
+    print('Prom fitness: ',(totFitness/len(lSelection)))
     for i in range(len(randNumbers)):
         aux = []
-        for j in range(len(selection)):
+        for j in range(len(lSelection)):
             if j == 0:
-                aux = [0, float(selection[j]['Prob'])]
+                aux = [0, float(lSelection[j]['Prob'])]
             else:
                 prob = getProbAcu(j)
-                aux = [float(prob), float((prob + selection[j]['Prob']))]
+                aux = [float(prob), float((prob + lSelection[j]['Prob']))]
             if randNumbers[i] >= aux[0] and randNumbers[i] <= aux[1] and contPob <= int(inp['Población máxima'].get()):
-                selection[j]['Conteo'] += 1
+                lSelection[j]['Conteo'] += 1
                 contPob += 1
                 print('Se encontro',randNumbers[i], ' en aux:',aux,'\nPoblación act: ',contPob)
                 break
-    printList(selection)
+    printList(lSelection)
     selection()
 
 def findFitness(x, y):
@@ -96,7 +98,7 @@ def createIndividuals(pob, bits):
 
 def inicializacion(inp):
     global bits
-    global selection
+    global lSelection
     global contPob
     rangoX = abs(int(inp['Rango máximo de X'].get()) - int(inp['Rango mínimo de X'].get()))
     Dx = (rangoX / int(inp['Tamaño de cadena de bits'].get()))
@@ -112,7 +114,7 @@ def inicializacion(inp):
         auxY = findY(int(inp['Rango mínimo de Y'].get()), Dy, int(bits[i],2))
         auxFitness = findFitness(auxX, auxY)
         dictPob = {'ID':i+1, 'bits': bits[i], 'decimal': int(bits[i], 2), 'X': auxX, 'Y': auxY, 'Fitness': auxFitness, 'Prob': 0, 'Conteo': 0}
-        selection.append(dictPob)
+        lSelection.append(dictPob)
         contPob += 1
 
 def start(entries):
