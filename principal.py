@@ -23,28 +23,9 @@ fields = (
     'Prob de mutación de individuo' # float
 )
 
-def findFitness(x, y):
-    return x**2 + y**3 # z = f(x) = x² + y³
-
-def findX(a, Dx, decimal):
-    return a + (decimal * Dx)
-
-def findY(a, Dy, decimal):
-    return a + (decimal * Dy)
-
 def printList(list):
     for i in range(len(list)):
         print(list[i])
-
-def createIndividuals(pob, bits):
-    cadena = ''
-    aux = []
-    for i in range(pob):
-        cadena = ''
-        for j in range(bits):
-            cadena += str(random.randint(0,1))
-        aux.append(cadena)
-    return aux
 
 def getProbAcu(limit):
     global selection
@@ -81,7 +62,26 @@ def evaluation(inp):
                 print('Se encontro',randNumbers[i], ' en aux:',aux,'\nPoblación act: ',contPob)
                 break
     printList(selection)
-    # selection()
+    selection()
+
+def findFitness(x, y):
+    return x**2 + y**3 # z = f(x) = x² + y³
+
+def findX(a, Dx, decimal):
+    return a + (decimal * Dx)
+
+def findY(a, Dy, decimal):
+    return a + (decimal * Dy)
+
+def createIndividuals(pob, bits):
+    cadena = ''
+    aux = []
+    for i in range(pob):
+        cadena = ''
+        for j in range(bits):
+            cadena += str(random.randint(0,1))
+        aux.append(cadena)
+    return aux
 
 def inicializacion(inp):
     global bits
