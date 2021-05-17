@@ -58,6 +58,8 @@ def evaluation(inp):
     auxPob = int(inp['Población máxima'].get()) - int(inp['Población inicial'].get())
     randNumbers = np.random.rand(auxPob)
     printList(selection)
+    print('Sum fitness: ',totFitness)
+    print('Prom fitness: ',(totFitness/len(selection)))
     for i in range(len(randNumbers)):
         aux = []
         for j in range(len(selection)):
@@ -66,13 +68,11 @@ def evaluation(inp):
             else:
                 aux = [float(selection[j-1]['Prob']), float(selection[j]['Prob'])]
             if randNumbers[i] >= aux[0] and randNumbers[i] <= aux[1] and contPob <= int(inp['Población máxima'].get()):
-                print('Se encontro',randNumbers[i], ' en aux:',aux)
-                contPob += 1
                 selection[j]['Conteo'] += 1
+                contPob += 1
+                print('Se encontro',randNumbers[i], ' en aux:',aux,'\nPoblación act: ',contPob)
                 break
     printList(selection)
-    print('Sum fitness: ',totFitness)
-    print('Prom fitness: ',(totFitness/len(selection)))
 
 def inicializacion(inp):
     global bits
