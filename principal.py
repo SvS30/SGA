@@ -9,15 +9,14 @@ individues = []
 selection = []
 
 fields = (
-    'Población inicial',
-    'Población máxima',
-    'Tamaño de cadena de bits',
-    'Número de generaciones',
-    'Rango mínimo de X',
-    'Rango máximo de X',
-    'Prob de cruza',
-    'Prob de mutación de bits',
-    'Prob de mutación de individuo'
+    'Población inicial', # int
+    'Población máxima', # int 
+    'Tamaño de cadena de bits', # int 
+    'Número de generaciones', # int
+    'Rango mínimo de X', # float 
+    'Rango máximo de X', # float
+    'Prob de mutación de bits', # float
+    'Prob de mutación de individuo' # float
 )
 
 def findX(a, Dx, decimal):
@@ -37,11 +36,11 @@ def createIndividuals(pob, bits):
         aux.append(cadena)
     return aux
 
-def initializaciion(inp):
+def inicializacion(inp):
     global individues
     global selection
     rango = abs(int(inp['Rango máximo de X'].get()) - int(inp['Rango mínimo de X'].get()))
-    Dx = (rango / int(inp['Población inicial'].get()))
+    Dx = (rango / len(inp['Tamaño de cadena de bits']).get())
     info = 'X mínimo: ', inp['Rango mínimo de X'].get(), ', X máximo: ', inp['Rango máximo de X'].get(), ', Dx: ', Dx
     print(info)
     individues = createIndividuals(int(inp['Población inicial'].get()), int(inp['Tamaño de cadena de bits'].get()))
@@ -52,7 +51,7 @@ def initializaciion(inp):
     printList(selection)
 
 def start(entries):
-    initializaciion(entries)
+    inicializacion(entries)
 
 def validModelation(input):
     if input.isdigit():
