@@ -46,6 +46,13 @@ def createIndividuals(pob, bits):
         aux.append(cadena)
     return aux
 
+def getProbAcu(limit):
+    global selection
+    a = 0
+    for i in range(0, limit, 1):
+        a += selection[i]['Prob']
+    return a
+
 def evaluation(inp):
     global selection
     global contPob
@@ -66,13 +73,15 @@ def evaluation(inp):
             if j == 0:
                 aux = [0, float(selection[j]['Prob'])]
             else:
-                aux = [float(selection[j-1]['Prob']), float(selection[j]['Prob'])]
+                prob = getProbAcu(j)
+                aux = [float(prob), float((prob + selection[j]['Prob']))]
             if randNumbers[i] >= aux[0] and randNumbers[i] <= aux[1] and contPob <= int(inp['Población máxima'].get()):
                 selection[j]['Conteo'] += 1
                 contPob += 1
                 print('Se encontro',randNumbers[i], ' en aux:',aux,'\nPoblación act: ',contPob)
                 break
     printList(selection)
+    # selection()
 
 def inicializacion(inp):
     global bits
