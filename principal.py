@@ -58,9 +58,6 @@ def evaluation(inp):
         lSelection[i]['Prob'] = lSelection[i]['Fitness'] / totFitness
     auxPob = int(inp['Población máxima'].get()) - int(inp['Población inicial'].get())
     randNumbers = np.random.rand(auxPob)
-    printList(lSelection)
-    print('Sum fitness: ',totFitness)
-    print('Prom fitness: ',(totFitness/len(lSelection)))
     for i in range(len(randNumbers)):
         aux = []
         for j in range(len(lSelection)):
@@ -75,6 +72,8 @@ def evaluation(inp):
                 print('Se encontro',randNumbers[i], ' en aux:',aux,'\nPoblación act: ',contPob)
                 break
     printList(lSelection)
+    print('Sum fitness: ',totFitness)
+    print('Prom fitness: ',(totFitness/len(lSelection)))
     selection()
 
 def findFitness(x, y):
@@ -119,6 +118,8 @@ def inicializacion(inp):
 
 def start(entries):
     inicializacion(entries)
+    # iterar por generaciones
+    print('------------------Selection------------------')
     evaluation(entries)
 
 def validModelation(input):
