@@ -7,7 +7,6 @@ import numpy as np
 # globals
 root = Tk()
 bits = []
-individuals = []
 selection = []
 contPob = 0
 
@@ -48,37 +47,36 @@ def createIndividuals(pob, bits):
     return aux
 
 def evaluation(inp):
-    global individuals
     global selection
     global contPob
     totFitness = 0
     promFitness = 0
-    for i in range(len(individuals)):
-        totFitness += individuals[i]['Fitness']
-    for i in range(len(individuals)):
-        individuals[i]['Prob'] = individuals[i]['Fitness'] / totFitness
+    for i in range(len(selection)):
+        totFitness += selection[i]['Fitness']
+    for i in range(len(selection)):
+        selection[i]['Prob'] = selection[i]['Fitness'] / totFitness
     auxPob = int(inp['Población máxima'].get()) - int(inp['Población inicial'].get())
     randNumbers = np.random.rand(auxPob)
-    printList(individuals)
+    printList(selection)
     for i in range(len(randNumbers)):
         aux = []
-        for j in range(len(individuals)):
+        for j in range(len(selection)):
             if j == 0:
-                aux = [0, float(individuals[j]['Prob'])]
+                aux = [0, float(selection[j]['Prob'])]
             else:
-                aux = [float(individuals[j-1]['Prob']), float(individuals[j]['Prob'])]
+                aux = [float(selection[j-1]['Prob']), float(selection[j]['Prob'])]
             if randNumbers[i] >= aux[0] and randNumbers[i] <= aux[1] and contPob <= int(inp['Población máxima'].get()):
                 print('Se encontro',randNumbers[i], ' en aux:',aux)
                 contPob += 1
-                individuals[j]['Conteo'] += 1
+                selection[j]['Conteo'] += 1
                 break
-    printList(individuals)
+    printList(selection)
     print('Sum fitness: ',totFitness)
-    print('Prom fitness: ',(totFitness/len(individuals)))
+    print('Prom fitness: ',(totFitness/len(selection)))
 
 def inicializacion(inp):
     global bits
-    global individuals
+    global selection
     global contPob
     rangoX = abs(int(inp['Rango máximo de X'].get()) - int(inp['Rango mínimo de X'].get()))
     Dx = (rangoX / int(inp['Tamaño de cadena de bits'].get()))
@@ -92,7 +90,7 @@ def inicializacion(inp):
         auxY = findY(int(inp['Rango mínimo de Y'].get()), Dy, int(bits[i],2))
         auxFitness = findFitness(auxX, auxY)
         dictPob = {'ID':i+1, 'bits': bits[i], 'decimal': int(bits[i], 2), 'X': auxX, 'Y': auxY, 'Fitness': auxFitness, 'Prob': 0, 'Conteo': 0}
-        individuals.append(dictPob)
+        selection.append(dictPob)
         contPob += 1
 
 def start(entries):
