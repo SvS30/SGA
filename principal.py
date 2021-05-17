@@ -47,16 +47,31 @@ def createIndividuals(pob, bits):
         aux.append(cadena)
     return aux
 
-def evaluation():
+def evaluation(inp):
     global individuals
     global selection
+    global contPob
     totFitness = 0
     promFitness = 0
     for i in range(len(individuals)):
         totFitness += individuals[i]['Fitness']
     for i in range(len(individuals)):
         individuals[i]['Prob'] = individuals[i]['Fitness'] / totFitness
-    
+    auxPob = int(inp['Población máxima'].get()) - int(inp['Población inicial'].get())
+    randNumbers = np.random.rand(auxPob)
+    printList(individuals)
+    for i in range(len(randNumbers)):
+        aux = []
+        for j in range(len(individuals)):
+            if j == 0:
+                aux = [0, float(individuals[j]['Prob'])]
+            else:
+                aux = [float(individuals[j-1]['Prob']), float(individuals[j]['Prob'])]
+            if randNumbers[i] >= aux[0] and randNumbers[i] <= aux[1] and contPob <= int(inp['Población máxima'].get()):
+                print('Se encontro',randNumbers[i], ' en aux:',aux)
+                contPob += 1
+                individuals[j]['Conteo'] += 1
+                break
     printList(individuals)
     print('Sum fitness: ',totFitness)
     print('Prom fitness: ',(totFitness/len(individuals)))
@@ -82,7 +97,7 @@ def inicializacion(inp):
 
 def start(entries):
     inicializacion(entries)
-    evaluation()
+    evaluation(entries)
 
 def validModelation(input):
     if input.isdigit():
