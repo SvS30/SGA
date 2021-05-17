@@ -28,6 +28,34 @@ def printList(list):
     for i in range(len(list)):
         print(list[i])
 
+def findFitness(x, y):
+    return x**2 + y**3 # z = f(x) = x² + y³
+
+def findX(a, Dx, decimal):
+    return a + (decimal * Dx)
+
+def findY(a, Dy, decimal):
+    return a + (decimal * Dy)
+
+def crossover(inp):
+    global lCrossover
+    bit1 = ''
+    bit2 = ''
+    auxBit1 = ''
+    auxBit2 = ''
+    for i in range(0, len(lCrossover), 2):
+        pointCrossover = random.randint(0, int(inp['Tamaño de cadena de bits'].get()))
+        bit1 = lCrossover[i]['bitsP'][0:pointCrossover]
+        bit2 = lCrossover[i+1]['bitsP'][0:pointCrossover]
+        auxBit1 = lCrossover[i]['bitsP'][pointCrossover:len(lCrossover)]
+        auxBit2 = lCrossover[i+1]['bitsP'][pointCrossover:len(lCrossover)]
+        bit1 = bit1 + auxBit2
+        bit2 = bit2 + auxBit1
+        lCrossover[i]['puntoC'] = pointCrossover
+        lCrossover[i+1]['puntoC'] = pointCrossover
+        lCrossover[i]['cruzaR'] = bit1
+        lCrossover[i+1]['cruzaR'] = bit2
+    printList(lCrossover)
 
 def selection():
     global lSelection
@@ -76,15 +104,6 @@ def evaluation(inp):
     print('Prom fitness: ',(totFitness/len(lSelection)))
     selection()
 
-def findFitness(x, y):
-    return x**2 + y**3 # z = f(x) = x² + y³
-
-def findX(a, Dx, decimal):
-    return a + (decimal * Dx)
-
-def findY(a, Dy, decimal):
-    return a + (decimal * Dy)
-
 def createIndividuals(pob, bits):
     cadena = ''
     aux = []
@@ -121,6 +140,8 @@ def start(entries):
     # iterar por generaciones
     print('------------------Selection------------------')
     evaluation(entries)
+    print('------------------Crossover------------------')
+    crossover(entries)
 
 def validModelation(input):
     if input.isdigit():
