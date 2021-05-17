@@ -8,6 +8,7 @@ import numpy as np
 root = Tk()
 bits = []
 selection = []
+crossover = []
 contPob = 0
 
 fields = (
@@ -26,6 +27,16 @@ fields = (
 def printList(list):
     for i in range(len(list)):
         print(list[i])
+
+def selection():
+    global selection
+    global crossover
+    position = 0
+    for i in range(len(selection)):
+        if selection[i]['Conteo'] != 0:
+            for j in range(len(selection[i]['Conteo'])):
+                dictCross= {'ID':position+1, 'bitsP': selection[i]['bits'], 'puntoC': 0, 'cruzaR': 0, 'X': 0, 'Y': 0, 'Fitness': 0}
+                crossover[position].append(dictCross)
 
 def getProbAcu(limit):
     global selection
