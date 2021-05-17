@@ -9,6 +9,7 @@ root = Tk()
 bits = []
 lSelection = []
 lCrossover = []
+lMutation = []
 contPob = 0
 
 fields = (
@@ -41,8 +42,54 @@ def findY(a, b, n, decimal):
     Dy = (rangoY / n)
     return a + (decimal * Dy)
 
+def mutation(inp):
+    global lMutation
+    Pm = float(inp['Prob de mutación de individuo'].get()) * float(inp['Prob de mutación de bits'].get())
+    newBit = ''
+    for i in range(0, len(lMutation), 2):
+        randomInd = (random.randint(1,100)/100)
+        bitCurrently = lMutation[i]['cruzaR']
+        if randomInd < float(inp['Prob de mutación de individuo'].get()):
+            for bit in bitCurrently:
+                randomGen = (random.randint(1,100)/100)
+                if randomGen < float(inp['Prob de mutación de bits'].get()):
+                    if bit == '1':
+                        newBit += '0'
+                    else:
+                        newBit += '1'
+                else:
+                    newBit += bit
+            lMutation[i]['mutaR'] = newBit
+        else:
+            lMutation[i]['mutaR'] = bitCurrently
+
+        newBit = ''
+        bitCurrently = lMutation[i+1]['cruzaR']
+        randomInd = (random.randint(1,100)/100)
+        if randomInd < float(inp['Prob de mutación de individuo'].get()):
+            for bit in bitCurrently:
+                randomGen = (random.randint(1,100)/100)
+                if randomGen < float(inp['Prob de mutación de bits'].get()):
+                    if bit == '1':
+                        newBit += '0'
+                    else:
+                        newBit += '1'
+                else:
+                    newBit += bit
+            lMutation[i]['mutaR'] = newBit
+        else:
+            lMutation[i]['mutaR'] = bitCurrently
+    for i in range(len(lMutation)):
+        bitInd = lMutation[i]['mutaR']
+        lMutation[i]['decimal'] = int(bitInd, 2)
+        lMutation[i]['X'] = findX(int(inp['Rango mínimo de X'].get()), int(inp['Rango máximo de X'].get()), int(inp['Tamaño de cadena de bits'].get()), lMutation[i]['decimal'])
+        lMutation[i]['Y'] = findY(int(inp['Rango mínimo de Y'].get()), int(inp['Rango máximo de Y'].get()), int(inp['Tamaño de cadena de bits'].get()), lMutation[i]['decimal'])
+        lMutation[i]['Fitness'] = findFitness(lMutation[i]['X'], lMutation[i]['Y'])
+    printList(lMutation)
+
 def crossover(inp):
     global lCrossover
+    global lMutation
     bit1 = ''
     bit2 = ''
     auxBit1 = ''
@@ -63,9 +110,12 @@ def crossover(inp):
         lCrossover[i+1]['decimal'] = int(bit2, 2)
 
     for i in range(len(lCrossover)):
+        position = 0
         lCrossover[i]['X'] = findX(int(inp['Rango mínimo de X'].get()), int(inp['Rango máximo de X'].get()), int(inp['Tamaño de cadena de bits'].get()), lCrossover[i]['decimal'])
         lCrossover[i]['Y'] = findY(int(inp['Rango mínimo de Y'].get()), int(inp['Rango máximo de Y'].get()), int(inp['Tamaño de cadena de bits'].get()), lCrossover[i]['decimal'])
         lCrossover[i]['Fitness'] = findFitness(lCrossover[i]['X'], lCrossover[i]['Y'])
+        dictMut = {'ID': position+1, 'cruzaR': lCrossover[i]['cruzaR'], 'mutaR':  0, 'decimal': 0, 'X': 0, 'Y': 0, 'Fitness': 0}
+        lMutation.append(dictMut)
     printList(lCrossover)
 
 def selection():
@@ -144,6 +194,8 @@ def start(entries):
     evaluation(entries)
     print('------------------Crossover------------------')
     crossover(entries)
+    print('------------------Mutation------------------')
+    mutation(entries)
 
 def validModelation(input):
     if input.isdigit():
