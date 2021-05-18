@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
+import sys
 import random 
 import math
 import numpy as np
@@ -48,6 +49,7 @@ def mutation(inp):
         Pm = float(inp['Prob de mutación de individuo'].get()) * float(inp['Prob de mutación de bits'].get())
     except:
         print('No se pudo conseguir la probabilidad de mutación')
+        sys.exit(1)
     for i in range(len(lMutation)):
         bitCurrently = ''
         newBit = ''
