@@ -14,16 +14,17 @@ lMutation = []
 contPob = 0
 
 fields = (
-    'Población inicial', # int
-    'Población máxima', # int 
-    'Tamaño de cadena de bits', # int 
-    'Número de generaciones', # int
-    'Rango mínimo de X', # float 
-    'Rango máximo de X', # float
-    'Rango mínimo de Y', # float 
-    'Rango máximo de Y', # float
-    'Prob de mutación de bits', # float
-    'Prob de mutación de individuo' # float
+    'Población inicial',
+    'Población máxima', 
+    'Tamaño de cadena de bits', 
+    'Número de generaciones',
+    'Rango mínimo de X', 
+    'Rango máximo de X',
+    'Rango mínimo de Y', 
+    'Rango máximo de Y',
+    'Error permisible',
+    'Prob de mutación de bits',
+    'Prob de mutación de individuo'
 )
 
 def printList(list):
@@ -33,12 +34,12 @@ def printList(list):
 def findFitness(x, y):
     return x**2 + y**3 # z = f(x) = x² + y³
 
-def findX(a, b, n, decimal):
+def findX(a, b, n, decimal, e):
     rangoX = abs(b - a)
     Dx = (rangoX / math.pow(2, n))
     return a + (decimal * Dx)
 
-def findY(a, b, n, decimal):
+def findY(a, b, n, decimal, e):
     rangoY = abs(b - a)
     Dy = (rangoY / math.pow(2, n))
     return a + (decimal * Dy)
@@ -171,8 +172,8 @@ def inicializacion(inp):
     global contPob
     bits = createIndividuals(int(inp['Población inicial'].get()), int(inp['Tamaño de cadena de bits'].get()))
     for i in range(int(inp['Población inicial'].get())):
-        auxX = findX(int(inp['Rango mínimo de X'].get()), int(inp['Rango máximo de X'].get()), int(inp['Tamaño de cadena de bits'].get()), int(bits[i], 2))
-        auxY = findY(int(inp['Rango mínimo de Y'].get()), int(inp['Rango máximo de Y'].get()), int(inp['Tamaño de cadena de bits'].get()), int(bits[i], 2))
+        auxY = findY(int(inp['Rango mínimo de Y'].get()), int(inp['Rango máximo de Y'].get()), int(inp['Tamaño de cadena de bits'].get()), int(bits[i], 2), float(inp['Error permisible'].get()))
+        auxX = findX(int(inp['Rango mínimo de X'].get()), int(inp['Rango máximo de X'].get()), int(inp['Tamaño de cadena de bits'].get()), int(bits[i], 2), float(inp['Error permisible'].get()))
         dictPob = {'ID':i+1, 'bits': bits[i], 'decimal': int(bits[i], 2), 'X': auxX, 'Y': auxY, 'Fitness': findFitness(auxX, auxY), 'Prob': 0, 'Conteo': 0}
         lSelection.append(dictPob)
         contPob += 1
