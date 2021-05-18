@@ -44,45 +44,26 @@ def findY(a, b, n, decimal):
 
 def mutation(inp):
     global lMutation
-    Pm = float(inp['Prob de mutación de individuo'].get()) * float(inp['Prob de mutación de bits'].get())
-    for i in range(0, len(lMutation), 2):
+    try:
+        Pm = float(inp['Prob de mutación de individuo'].get()) * float(inp['Prob de mutación de bits'].get())
+    except:
+        print('No se pudo conseguir la probabilidad de mutación')
+    for i in range(len(lMutation)):
         bitCurrently = ''
         newBit = ''
-        randomInd = (random.randint(1,100)/100)
         bitCurrently = lMutation[i]['cruzaR']
-        if randomInd < float(inp['Prob de mutación de individuo'].get()):
-            for bit in bitCurrently:
-                randomGen = (random.randint(1,100)/100)
-                if randomGen < float(inp['Prob de mutación de bits'].get()):
-                    if bit == '1':
-                        newBit += '0'
-                    else:
-                        newBit += '1'
+        for bit in bitCurrently:
+            randomGen = (random.randint(1,100)/100)
+            print('if ', randomGen, ' < ', Pm, '?')
+            if randomGen < Pm:
+                if bit == '1':
+                    newBit += '0'
                 else:
-                    newBit += bit
-            print('new bit -> ', newBit)
-            lMutation[i]['mutaR'] = newBit
-        else:
-            lMutation[i]['mutaR'] = bitCurrently
-
-        bitCurrently = ''
-        newBit = ''
-        bitCurrently = lMutation[i+1]['cruzaR']
-        randomInd = (random.randint(1,100)/100)
-        if randomInd < float(inp['Prob de mutación de individuo'].get()):
-            for bit in bitCurrently:
-                randomGen = (random.randint(1,100)/100)
-                if randomGen < float(inp['Prob de mutación de bits'].get()):
-                    if bit == '1':
-                        newBit += '0'
-                    else:
-                        newBit += '1'
-                else:
-                    newBit += bit
-            print('new bit -> ', newBit)
-            lMutation[i]['mutaR'] = newBit
-        else:
-            lMutation[i]['mutaR'] = bitCurrently
+                    newBit += '1'
+            else:
+                newBit += bit
+        print('bitCurrently: ', bitCurrently, ' Muto a -> ', newBit)
+        lMutation[i]['mutaR'] = newBit
     for i in range(len(lMutation)):
         bitInd = str(lMutation[i]['mutaR'])
         lMutation[i]['decimal'] = int(bitInd, 2)
