@@ -105,6 +105,7 @@ def crossover(inp):
         lCrossover[i]['Fitness'] = findFitness(lCrossover[i]['X'], lCrossover[i]['Y'])
         dictMut = {'ID': position+1, 'cruzaR': lCrossover[i]['cruzaR'], 'mutaR':  0, 'decimal': 0, 'X': 0, 'Y': 0, 'Fitness': 0}
         lMutation.append(dictMut)
+        position += 1
     printList(lCrossover)
 
 def selection():
