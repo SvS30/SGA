@@ -35,18 +35,20 @@ def findFitness(x, y):
 
 def findX(a, b, n, decimal):
     rangoX = abs(b - a)
-    Dx = (rangoX / n)
+    Dx = (rangoX / math.pow(2, n))
     return a + (decimal * Dx)
 
 def findY(a, b, n, decimal):
     rangoY = abs(b - a)
-    Dy = (rangoY / n)
+    Dy = (rangoY / math.pow(2, n))
     return a + (decimal * Dy)
 
 def mutation(inp):
     global lMutation
     try:
-        Pm = float(inp['Prob de mutación de individuo'].get()) * float(inp['Prob de mutación de bits'].get())
+        Pmi = float((inp['Prob de mutación de individuo'].get()/100))
+        Pmb = float((inp['Prob de mutación de bits'].get()/100))
+        Pm = Pmi * Pmb
     except:
         print('No se pudo conseguir la probabilidad de mutación')
         sys.exit(1)
