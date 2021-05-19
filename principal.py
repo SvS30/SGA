@@ -11,6 +11,8 @@ bits = []
 lSelection = []
 lCrossover = []
 lMutation = []
+lTop = []
+contGen = 0
 contPob = 0
 
 fields = (
@@ -126,6 +128,7 @@ def getProbAcu(limit):
 def evaluation(inp):
     global lSelection
     global contPob
+    global contGen
     totFitness = 0
     promFitness = 0
     for i in range(len(lSelection)):
@@ -148,8 +151,24 @@ def evaluation(inp):
                 print('Se encontro',randNumbers[i], ' en aux:',aux,'\nPoblación act: ',contPob)
                 break
     printList(lSelection)
+    for i in range(len(lSelection)):
+        if i == 0:
+            maxFitness = lSelection[0]['Fitness']
+            xMax = lSelection[0]['X']
+            yMax = lSelection[0]['Y']
+            minFitness = lSelection[0]['Fitness']
+        else:
+            if maxFitness < lSelection[i]['Fitness']:
+                maxFitness = lSelection[i]['Fitness']
+                xMax = lSelection[i]['X']
+                yMax = lSelection[i]['Y']
+            if minFitness > lSelection[i]['Fitness']:
+                minFitness = lSelection[i]['Fitness']
+    dictTop = {'# Generation' : contGen, 'Máximo': maxFitness, 'Mínimo' : minFitness, 'Promedio' : (totFitness/len(lSelection))},
+    lTop.append(dictTop)
     print('Sum fitness: ',totFitness)
     print('Prom fitness: ',(totFitness/len(lSelection)))
+    print('Generation: ', contGen,' X: ', xMax,' Y:', yMax, ' maxFitness: ', maxFitness, ' minFitness: ', minFitness)
     selection()
 
 def createIndividuals(pob, bits):
