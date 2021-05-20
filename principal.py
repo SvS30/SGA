@@ -207,7 +207,7 @@ def evaluation(inp):
                 yMax = lSelection[i]['Y']
             if minFitness > lSelection[i]['Fitness']:
                 minFitness = lSelection[i]['Fitness']
-    dictTop = {'# Generation' : contGen, 'Máximo': maxFitness, 'Mínimo' : minFitness, 'Promedio' : (totFitness/len(lSelection))},
+    dictTop = {'# Generation' : contGen, 'Máximo': maxFitness, 'Mínimo' : minFitness, 'Promedio' : (totFitness/len(lSelection))}
     lTop.append(dictTop)
     print('Sum fitness: ',totFitness)
     print('Prom fitness: ',(totFitness/len(lSelection)))
@@ -268,6 +268,17 @@ def inicializacion(inp):
         lSelection.append(dictPob)
         contPob += 1
 
+def getFitnessMax():
+    global lTop
+    maximo = 0
+    for i in range(len(lTop)):
+        if i == 0:
+            maximo = lTop[i]['Máximo']
+        else:
+            if maximo < lTop[i]['Máximo']:
+                maximo = lTop[i]['Máximo']
+    return maximo
+
 def start(entries):
     global contGen
     inicializacion(entries)
@@ -280,6 +291,10 @@ def start(entries):
         print('------------------ Mutation #', i+1, ' ------------------')
         mutation(entries)
         contGen += 1
+    print('------------------ Mejores Resultados ------------------')
+    printList(lTop)
+    fitnessMax = getFitnessMax()
+    messagebox.showinfo('Mejor fitness de todas las generaciones', fitnessMax)
 
 def validModelation(input):
     try:
