@@ -20,8 +20,7 @@ Dy = 0
 
 fields = (
     'Población inicial',
-    'Población máxima', 
-    'Tamaño de cadena de bits', 
+    'Población máxima',
     'Número de generaciones',
     'Rango mínimo de X', 
     'Rango máximo de X',
