@@ -38,14 +38,12 @@ def printList(list):
 def findFitness(x, y):
     return x**2 + y**3 # z = f(x) = x² + y³
 
-def findX(a, b, n, decimal, e):
-    rangoX = abs(b - a)
-    Dx = (rangoX / math.pow(2, n))
+def findX(a, decimal):
+    global Dx
     return a + (decimal * Dx)
 
-def findY(a, b, n, decimal, e):
-    rangoY = abs(b - a)
-    Dy = (rangoY / math.pow(2, n))
+def findY(a, decimal):
+    global Dy
     return a + (decimal * Dy)
 
 def mutation(inp):
@@ -186,19 +184,23 @@ def createIndividuals(pob, bits):
     return aux
 
 def calculateY(a, b, e):
+    global Dy
     rango = b - a
     delta = 2 * e
     saltos = int(rango / delta)
     aux = format(saltos, "b")
     bits = len(aux)
+    Dy = rango / math.pow(2, bits)
     return bits
 
 def calculateX(a, b, e):
+    global Dx
     rango = b - a
     delta = 2 * e
     saltos = int(rango / delta)
     aux = format(saltos, "b")
     bits = len(aux)
+    Dx = rango / math.pow(2, bits)
     return bits
 
 def getBits(a, b, c, d, e):
@@ -217,8 +219,8 @@ def inicializacion(inp):
     contBits = getBits(int(inp['Rango mínimo de X'].get()), int(inp['Rango máximo de X'].get()), int(inp['Rango mínimo de Y'].get()), int(inp['Rango máximo de Y'].get()), float(inp['Error permisible'].get()))
     bits = createIndividuals(int(inp['Población inicial'].get()), contBits)
     for i in range(int(inp['Población inicial'].get())):
-        auxX = findX(int(inp['Rango mínimo de X'].get()), int(inp['Rango máximo de X'].get()), contBits, int(bits[i], 2), float(inp['Error permisible'].get()))
-        auxY = findY(int(inp['Rango mínimo de Y'].get()), int(inp['Rango máximo de Y'].get()), contBits, int(bits[i], 2), float(inp['Error permisible'].get()))
+        auxX = findX(int(inp['Rango mínimo de X'].get()), int(bits[i], 2))
+        auxY = findY(int(inp['Rango mínimo de Y'].get()), int(bits[i], 2))
         dictPob = {'ID':i+1, 'bits': bits[i], 'decimal': int(bits[i], 2), 'X': auxX, 'Y': auxY, 'Fitness': findFitness(auxX, auxY), 'Prob': 0, 'Conteo': 0}
         lSelection.append(dictPob)
         contPob += 1
