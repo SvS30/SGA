@@ -100,7 +100,6 @@ def crossover(inp):
         lCrossover[i+1]['decimal'] = int(bit2, 2)
 
     for i in range(len(lCrossover)):
-        position = 0
         lCrossover[i]['X'] = findX(int(inp['Rango mínimo de X'].get()), lCrossover[i]['decimal'])
         lCrossover[i]['Y'] = findY(int(inp['Rango mínimo de Y'].get()), lCrossover[i]['decimal'])
         lCrossover[i]['Fitness'] = findFitness(lCrossover[i]['X'], lCrossover[i]['Y'])
