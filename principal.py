@@ -211,7 +211,7 @@ def evaluation(inp):
     lTop.append(dictTop)
     print('Sum fitness: ',totFitness)
     print('Prom fitness: ',(totFitness/len(lSelection)))
-    print('Generation: ', contGen,' X: ', xMax,' Y:', yMax, ' maxFitness: ', maxFitness, ' minFitness: ', minFitness)
+    print('Generation: ', contGen+1,' X: ', xMax,' Y:', yMax, ' maxFitness: ', maxFitness, ' minFitness: ', minFitness)
     selection()
 
 def createIndividuals(pob, bits):
