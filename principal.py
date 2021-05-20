@@ -107,9 +107,6 @@ def mutation(inp):
     printList(lMutation)
     cleanLists()
     poda(int(inp['Población inicial'].get()))
-    printList(lGenerations)
-    print('--------------------------------------------')
-    printList(lSelection)
 
 def crossover(inp):
     global lCrossover
@@ -270,14 +267,17 @@ def inicializacion(inp):
         contPob += 1
 
 def start(entries):
+    global contGen
     inicializacion(entries)
     # iterar por generaciones
-    print('------------------Selection------------------')
-    evaluation(entries)
-    print('------------------Crossover------------------')
-    crossover(entries)
-    print('------------------Mutation------------------')
-    mutation(entries)
+    for i in range(int(entries['Número de generaciones'].get())):
+        print('------------------ Selection #', i+1, ' ------------------')
+        evaluation(entries)
+        print('------------------ Crossover #', i+1, ' ------------------')
+        crossover(entries)
+        print('------------------ Mutation #', i+1, ' ------------------')
+        mutation(entries)
+        contGen += 1
 
 def validModelation(input):
     try:
