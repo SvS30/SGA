@@ -8,4 +8,5 @@ Se usan mecanismos que simulan a los de la evolución de las especies (**Cruza, 
 Python >= 3.6
 Tkinter >= 8.6
 Numpy >= 1.19.5
+Matplotlib >= 3.3.4
 ```
