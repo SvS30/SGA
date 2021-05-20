@@ -12,6 +12,7 @@ lSelection = []
 lCrossover = []
 lMutation = []
 lTop = []
+lGenerations = []
 contGen = 0
 contPob = 0
 contBits = 0
@@ -48,6 +49,7 @@ def findY(a, decimal):
 
 def mutation(inp):
     global lMutation
+    global lGenerations
     global contBits
     Pmi = float(inp['Prob de mutación de individuo'].get())
     Pmb = float(inp['Prob de mutación de bits'].get())
@@ -74,7 +76,16 @@ def mutation(inp):
         lMutation[i]['X'] = findX(int(inp['Rango mínimo de X'].get()), lMutation[i]['decimal'])
         lMutation[i]['Y'] = findY(int(inp['Rango mínimo de Y'].get()), lMutation[i]['decimal'])
         lMutation[i]['Fitness'] = findFitness(lMutation[i]['X'], lMutation[i]['Y'])
+        lGenerations[i]['bitsH'] = lMutation[i]['mutaR']
+        lGenerations[i]['fitnessH'] = lMutation[i]['Fitness']
+        if lGenerations[i]['fitnessH'] > lGenerations[i]['fitnessP']:
+            lGenerations[i]['fitnessM'] = lGenerations[i]['fitnessH']
+            lGenerations[i]['bitsM'] = lGenerations[i]['bitsH']
+        else:
+            lGenerations[i]['fitnessM'] = lGenerations[i]['fitnessP']
+            lGenerations[i]['bitsM'] = lGenerations[i]['bitsP']
     printList(lMutation)
+    printList(lGenerations)
 
 def crossover(inp):
     global lCrossover
@@ -84,6 +95,7 @@ def crossover(inp):
     bit2 = ''
     auxBit1 = ''
     auxBit2 = ''
+    position = 0
     for i in range(0, len(lCrossover), 2):
         pointCrossover = random.randint(0, contBits)
         bit1 = lCrossover[i]['bitsP'][0:pointCrossover]
@@ -111,12 +123,15 @@ def crossover(inp):
 def selection():
     global lSelection
     global lCrossover
+    global lGenerations
     position = 0
     for i in range(len(lSelection)):
         if lSelection[i]['Conteo'] != 0:
             for j in range(lSelection[i]['Conteo']):
                 dictCross = {'ID':position+1, 'bitsP': lSelection[i]['bits'], 'puntoC': 0, 'cruzaR': 0, 'decimal': 0, 'X': 0, 'Y': 0, 'Fitness': 0}
                 lCrossover.append(dictCross)
+                dictGeneration = {'ID': position+1, 'bitsP': lSelection[i]['bits'], 'fitnessP': lSelection[i]['Fitness'], 'bitsH': 0, 'fitnessH': 0, 'fitnessM': 0, 'bitsM': 0}
+                lGenerations.append(dictGeneration)
                 position += 1
 
 def getProbAcu(limit):
