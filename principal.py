@@ -236,6 +236,11 @@ def start(entries):
     mutation(entries)
 
 def validModelation(input):
+    try:
+        float(input)
+        return True
+    except:
+        return False
     if input.isdigit():
         return True
     else:
