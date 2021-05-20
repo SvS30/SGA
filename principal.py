@@ -208,7 +208,7 @@ def evaluation(inp):
                 yMax = lSelection[i]['Y']
             if minFitness > lSelection[i]['Fitness']:
                 minFitness = lSelection[i]['Fitness']
-    dictTop = {'# Generation' : contGen, 'Máximo': maxFitness, 'Mínimo' : minFitness, 'Promedio' : (totFitness/len(lSelection))}
+    dictTop = {'# Generation' : contGen+1, 'Máximo': maxFitness, 'Mínimo' : minFitness, 'Promedio' : (totFitness/len(lSelection))}
     lTop.append(dictTop)
     print('Sum fitness: ',totFitness)
     print('Prom fitness: ',(totFitness/len(lSelection)))
@@ -280,7 +280,30 @@ def getFitnessMax():
                 maximo = lTop[i]['Máximo']
     return maximo
 
+def grafica1(inp):
+    global lTop
+    maxs = []
+    mins = []
+    proms = []
+    generations = []
+    
+    for i in range(int(inp['Número de generaciones'].get())):
+        maxs.append(lTop[i]['Máximo'])
+        mins.append(lTop[i]['Mínimo'])
+        proms.append(lTop[i]['Promedio'])
+        generations.append(i+1)
+    plot.plot(generations, maxs, 'b-x', linewidth=2, label="Máximos")
+    plot.plot(generations, mins, 'r-o', linewidth=2, label="Mínimos")
+    plot.plot(generations, proms, 'g-s', linewidth=2, label="Promedio")
+    plot.legend(loc='lower right')
+    plot.xlabel('Generaciones')
+    plot.ylabel('Fitness')
+    plot.grid()
+    plot.show()
+
+
 def start(entries):
+    global lTop
     global contGen
     inicializacion(entries)
     # iterar por generaciones
@@ -294,6 +317,7 @@ def start(entries):
         contGen += 1
     print('------------------ Mejores Resultados ------------------')
     printList(lTop)
+    grafica1(entries)
     fitnessMax = getFitnessMax()
     messagebox.showinfo('Mejor fitness de todas las generaciones', fitnessMax)
 
