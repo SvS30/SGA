@@ -38,7 +38,8 @@ def printList(list):
         print(list[i])
 
 def findFitness(x, y):
-    return x**2 + y**3 # z = f(x) = x² + y³
+    a = y * math.cos(x) * math.sin(y)
+    b = x * math.cos(y) * math.sin(x)
 
 def findX(a, decimal):
     global Dx

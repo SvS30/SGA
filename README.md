@@ -10,3 +10,6 @@ Tkinter >= 8.6
 Numpy >= 1.19.5
 Matplotlib >= 3.3.4
 ```
+
+### Función
+*z(x,y) = y &bull; cos(x) &bull; sin(y) + x &bull; cos(y) &bull; sin(x)*
