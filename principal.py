@@ -14,6 +14,9 @@ lMutation = []
 lTop = []
 contGen = 0
 contPob = 0
+contBits = 0
+Dx = 0
+Dy = 0
 
 fields = (
     'Población inicial',
@@ -48,6 +51,7 @@ def findY(a, b, n, decimal, e):
 
 def mutation(inp):
     global lMutation
+    global contBits
     Pmi = float(inp['Prob de mutación de individuo'].get())
     Pmb = float(inp['Prob de mutación de bits'].get())
     Pm = (Pmi/100) * (Pmb/100)
@@ -70,20 +74,21 @@ def mutation(inp):
     for i in range(len(lMutation)):
         bitInd = str(lMutation[i]['mutaR'])
         lMutation[i]['decimal'] = int(bitInd, 2)
-        lMutation[i]['X'] = findX(int(inp['Rango mínimo de X'].get()), int(inp['Rango máximo de X'].get()), int(inp['Tamaño de cadena de bits'].get()), lMutation[i]['decimal'], float(inp['Error permisible'].get()))
-        lMutation[i]['Y'] = findY(int(inp['Rango mínimo de Y'].get()), int(inp['Rango máximo de Y'].get()), int(inp['Tamaño de cadena de bits'].get()), lMutation[i]['decimal'], float(inp['Error permisible'].get()))
+        lMutation[i]['X'] = findX(int(inp['Rango mínimo de X'].get()), int(inp['Rango máximo de X'].get()), contBits), lMutation[i]['decimal'], float(inp['Error permisible'].get()))
+        lMutation[i]['Y'] = findY(int(inp['Rango mínimo de Y'].get()), int(inp['Rango máximo de Y'].get()), contBits), lMutation[i]['decimal'], float(inp['Error permisible'].get()))
         lMutation[i]['Fitness'] = findFitness(lMutation[i]['X'], lMutation[i]['Y'])
     printList(lMutation)
 
 def crossover(inp):
     global lCrossover
     global lMutation
+    global contBits
     bit1 = ''
     bit2 = ''
     auxBit1 = ''
     auxBit2 = ''
     for i in range(0, len(lCrossover), 2):
-        pointCrossover = random.randint(0, int(inp['Tamaño de cadena de bits'].get()))
+        pointCrossover = random.randint(0, contBits))
         bit1 = lCrossover[i]['bitsP'][0:pointCrossover]
         bit2 = lCrossover[i+1]['bitsP'][0:pointCrossover]
         auxBit1 = lCrossover[i]['bitsP'][pointCrossover:len(lCrossover)]
@@ -99,8 +104,8 @@ def crossover(inp):
 
     for i in range(len(lCrossover)):
         position = 0
-        lCrossover[i]['X'] = findX(int(inp['Rango mínimo de X'].get()), int(inp['Rango máximo de X'].get()), int(inp['Tamaño de cadena de bits'].get()), lCrossover[i]['decimal'], float(inp['Error permisible'].get()))
-        lCrossover[i]['Y'] = findY(int(inp['Rango mínimo de Y'].get()), int(inp['Rango máximo de Y'].get()), int(inp['Tamaño de cadena de bits'].get()), lCrossover[i]['decimal'], float(inp['Error permisible'].get()))
+        lCrossover[i]['X'] = findX(int(inp['Rango mínimo de X'].get()), int(inp['Rango máximo de X'].get()), contBits), lCrossover[i]['decimal'], float(inp['Error permisible'].get()))
+        lCrossover[i]['Y'] = findY(int(inp['Rango mínimo de Y'].get()), int(inp['Rango máximo de Y'].get()), contBits), lCrossover[i]['decimal'], float(inp['Error permisible'].get()))
         lCrossover[i]['Fitness'] = findFitness(lCrossover[i]['X'], lCrossover[i]['Y'])
         dictMut = {'ID': position+1, 'cruzaR': lCrossover[i]['cruzaR'], 'mutaR':  0, 'decimal': 0, 'X': 0, 'Y': 0, 'Fitness': 0}
         lMutation.append(dictMut)
@@ -181,14 +186,40 @@ def createIndividuals(pob, bits):
         aux.append(cadena)
     return aux
 
+def calculateY(a, b, e):
+    rango = b - a
+    delta = 2 * e
+    saltos = int(rango / delta)
+    aux = format(saltos, "b")
+    bits = len(aux)
+    return bits
+
+def calculateX(a, b, e):
+    rango = b - a
+    delta = 2 * e
+    saltos = int(rango / delta)
+    aux = format(saltos, "b")
+    bits = len(aux)
+    return bits
+
+def getBits(a, b, c, d, e):
+    bitsX = calculateX(a, b, e)
+    bitsY = calculateY(c, d, e)
+    if bitsX > bitsY:
+        return bitsX
+    else:
+        return bitsY
+
 def inicializacion(inp):
     global bits
     global lSelection
     global contPob
-    bits = createIndividuals(int(inp['Población inicial'].get()), int(inp['Tamaño de cadena de bits'].get()))
+    global contBits
+    contBits = getBits(int(inp['Rango mínimo de X'].get()), int(inp['Rango máximo de X'].get()), int(inp['Rango mínimo de Y'].get()), int(inp['Rango máximo de Y'].get()), float(inp['Error permisible'].get()))
+    bits = createIndividuals(int(inp['Población inicial'].get()), contBits)
     for i in range(int(inp['Población inicial'].get())):
-        auxY = findY(int(inp['Rango mínimo de Y'].get()), int(inp['Rango máximo de Y'].get()), int(inp['Tamaño de cadena de bits'].get()), int(bits[i], 2), float(inp['Error permisible'].get()))
-        auxX = findX(int(inp['Rango mínimo de X'].get()), int(inp['Rango máximo de X'].get()), int(inp['Tamaño de cadena de bits'].get()), int(bits[i], 2), float(inp['Error permisible'].get()))
+        auxY = findY(int(inp['Rango mínimo de Y'].get()), int(inp['Rango máximo de Y'].get()), contBits), int(bits[i], 2), float(inp['Error permisible'].get()))
+        auxX = findX(int(inp['Rango mínimo de X'].get()), int(inp['Rango máximo de X'].get()), contBits), int(bits[i], 2), float(inp['Error permisible'].get()))
         dictPob = {'ID':i+1, 'bits': bits[i], 'decimal': int(bits[i], 2), 'X': auxX, 'Y': auxY, 'Fitness': findFitness(auxX, auxY), 'Prob': 0, 'Conteo': 0}
         lSelection.append(dictPob)
         contPob += 1
