@@ -58,7 +58,7 @@ def mutation(inp):
         bitCurrently = lMutation[i]['cruzaR']
         for bit in bitCurrently:
             randomGen = (random.randint(1,100)/100)
-            print('if ', randomGen, ' < ', Pm, '?')
+            # print('if ', randomGen, ' < ', Pm, '?')
             if randomGen < Pm:
                 if bit == '1':
                     newBit += '0'
@@ -66,7 +66,7 @@ def mutation(inp):
                     newBit += '1'
             else:
                 newBit += bit
-        print('bitCurrently: ', bitCurrently, ' Muto a -> ', newBit)
+        # print('bitCurrently: ', bitCurrently, ' Muto a -> ', newBit)
         lMutation[i]['mutaR'] = newBit
     for i in range(len(lMutation)):
         bitInd = str(lMutation[i]['mutaR'])
@@ -150,7 +150,7 @@ def evaluation(inp):
             if randNumbers[i] >= aux[0] and randNumbers[i] <= aux[1] and contPob <= int(inp['Población máxima'].get()):
                 lSelection[j]['Conteo'] += 1
                 contPob += 1
-                print('Se encontro',randNumbers[i], ' en aux:',aux,'\nPoblación act: ',contPob)
+                # print('Se encontro',randNumbers[i], ' en aux:',aux,'\nPoblación act: ',contPob)
                 break
     printList(lSelection)
     for i in range(len(lSelection)):
@@ -191,6 +191,7 @@ def calculateY(a, b, e):
     aux = format(saltos, "b")
     bits = len(aux)
     Dy = rango / math.pow(2, bits)
+    print('Y usara ', bits, ' bits\nDy: ', Dy)
     return bits
 
 def calculateX(a, b, e):
@@ -201,14 +202,17 @@ def calculateX(a, b, e):
     aux = format(saltos, "b")
     bits = len(aux)
     Dx = rango / math.pow(2, bits)
+    print('X usara ', bits, ' bits\nDx: ', Dx)
     return bits
 
 def getBits(a, b, c, d, e):
     bitsX = calculateX(a, b, e)
     bitsY = calculateY(c, d, e)
     if bitsX > bitsY:
+        print('Se usaran ', bitsX, ' bits')
         return bitsX
     else:
+        print('Se usaran ', bitsY, ' bits')
         return bitsY
 
 def inicializacion(inp):
