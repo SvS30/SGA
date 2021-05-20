@@ -47,6 +47,26 @@ def findY(a, decimal):
     global Dy
     return a + (decimal * Dy)
 
+def poda(pob):
+    global lSelection
+    global lGenerations
+
+    for i in range(pob):
+        if lGenerations[i]['fitnessH'] > lGenerations[i]['fitnessP']:
+            dictSel = {'ID': i+1, 'bits': lGenerations[i]['bitsH'], 'decimal': int(lGenerations[i]['bitsH'], 2), 'X': 0, 'Y': 0, 'Fitness': 0, 'Prob': 0, 'Conteo': 0}
+        else:
+            dictSel = {'ID': i+1, 'bits': lGenerations[i]['bitsP'], 'decimal': int(lGenerations[i]['bitsP'], 2), 'X': 0, 'Y': 0, 'Fitness': 0, 'Prob': 0, 'Conteo': 0}
+        lSelection.append(dictSel)
+
+def cleanLists():
+    global lSelection
+    global lCrossover
+    global lMutation
+
+    lSelection.clear()
+    lCrossover.clear()
+    lMutation.clear()
+
 def mutation(inp):
     global lMutation
     global lGenerations
@@ -85,7 +105,11 @@ def mutation(inp):
             lGenerations[i]['fitnessM'] = lGenerations[i]['fitnessP']
             lGenerations[i]['bitsM'] = lGenerations[i]['bitsP']
     printList(lMutation)
+    cleanLists()
+    poda(int(inp['Población inicial'].get()))
     printList(lGenerations)
+    print('--------------------------------------------')
+    printList(lSelection)
 
 def crossover(inp):
     global lCrossover
@@ -147,6 +171,10 @@ def evaluation(inp):
     global contGen
     totFitness = 0
     promFitness = 0
+    for i in range(len(lSelection)):
+        lSelection[i]['X'] = findX(int(inp['Rango mínimo de X'].get()), int(lSelection[i]['bits'], 2))
+        lSelection[i]['Y'] = findY(int(inp['Rango mínimo de Y'].get()), int(lSelection[i]['bits'], 2))
+        lSelection[i]['Fitness'] = findFitness(lSelection[i]['X'], lSelection[i]['Y'])
     for i in range(len(lSelection)):
         totFitness += lSelection[i]['Fitness']
     for i in range(len(lSelection)):
@@ -237,9 +265,7 @@ def inicializacion(inp):
     contBits = getBits(int(inp['Rango mínimo de X'].get()), int(inp['Rango máximo de X'].get()), int(inp['Rango mínimo de Y'].get()), int(inp['Rango máximo de Y'].get()), float(inp['Error permisible'].get()))
     bits = createIndividuals(int(inp['Población inicial'].get()), contBits)
     for i in range(int(inp['Población inicial'].get())):
-        auxX = findX(int(inp['Rango mínimo de X'].get()), int(bits[i], 2))
-        auxY = findY(int(inp['Rango mínimo de Y'].get()), int(bits[i], 2))
-        dictPob = {'ID':i+1, 'bits': bits[i], 'decimal': int(bits[i], 2), 'X': auxX, 'Y': auxY, 'Fitness': findFitness(auxX, auxY), 'Prob': 0, 'Conteo': 0}
+        dictPob = {'ID':i+1, 'bits': bits[i], 'decimal': int(bits[i], 2), 'X': 0, 'Y': 0, 'Fitness': 0, 'Prob': 0, 'Conteo': 0}
         lSelection.append(dictPob)
         contPob += 1
 
