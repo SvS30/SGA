@@ -40,6 +40,7 @@ def printList(list):
 def findFitness(x, y):
     a = y * math.cos(x) * math.sin(y)
     b = x * math.cos(y) * math.sin(x)
+    return abs(a + b)
 
 def findX(a, decimal):
     global Dx
