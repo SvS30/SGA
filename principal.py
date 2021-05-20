@@ -50,22 +50,24 @@ def findY(a, decimal):
 def poda(pob):
     global lSelection
     global lGenerations
-
+    global contPob
     for i in range(pob):
         if lGenerations[i]['fitnessH'] > lGenerations[i]['fitnessP']:
             dictSel = {'ID': i+1, 'bits': lGenerations[i]['bitsH'], 'decimal': int(lGenerations[i]['bitsH'], 2), 'X': 0, 'Y': 0, 'Fitness': 0, 'Prob': 0, 'Conteo': 0}
         else:
             dictSel = {'ID': i+1, 'bits': lGenerations[i]['bitsP'], 'decimal': int(lGenerations[i]['bitsP'], 2), 'X': 0, 'Y': 0, 'Fitness': 0, 'Prob': 0, 'Conteo': 0}
         lSelection.append(dictSel)
+        contPob += 1
 
 def cleanLists():
     global lSelection
     global lCrossover
     global lMutation
-
+    global contPob
     lSelection.clear()
     lCrossover.clear()
     lMutation.clear()
+    contPob = 0
 
 def mutation(inp):
     global lMutation
@@ -118,7 +120,7 @@ def crossover(inp):
     auxBit2 = ''
     position = 0
     for i in range(0, len(lCrossover), 2):
-        pointCrossover = random.randint(0, contBits)
+        pointCrossover = random.randint(1, contBits-1)
         bit1 = lCrossover[i]['bitsP'][0:pointCrossover]
         bit2 = lCrossover[i+1]['bitsP'][0:pointCrossover]
         auxBit1 = lCrossover[i]['bitsP'][pointCrossover:len(lCrossover)]
