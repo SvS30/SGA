@@ -324,6 +324,7 @@ def grafica1(inp):
     plot.legend(loc='lower right')
     plot.xlabel('Generaciones')
     plot.ylabel('Fitness')
+    plot.title("Evolución del Fitness")
     plot.grid()
     plot.show()
 
