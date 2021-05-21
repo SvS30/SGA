@@ -61,6 +61,9 @@ def poda(pob):
             dictSel = {'ID': i+1, 'bits': lGenerations[i]['bitsP'], 'decimal': int(lGenerations[i]['bitsP'], 2), 'X': 0, 'Y': 0, 'Fitness': 0, 'Prob': 0, 'Conteo': 0}
         lSelection.append(dictSel)
         contPob += 1
+    print('------------------ Poda #', contGen+1, ' ------------------')
+    printList(lGenerations)
+    lGenerations.clear()
 
 def cleanLists():
     global lSelection
