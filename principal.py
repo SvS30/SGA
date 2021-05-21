@@ -163,6 +163,19 @@ def selection():
                 lGenerations.append(dictGeneration)
                 position += 1
 
+def getFitnessMaxSelec():
+    global lSelection
+    maximo = 0
+    position = 0
+    for i in range(len(lSelection)):
+        if i == 0:
+            maximo = lSelection[i]['Fitness']
+        else:
+            if maximo < lSelection[i]['Fitness']:
+                maximo = lSelection[i]['Fitness']
+                position = i
+    return position
+
 def getProbAcu(limit):
     global lSelection
     a = 0
@@ -176,6 +189,7 @@ def evaluation(inp):
     global contGen
     totFitness = 0
     promFitness = 0
+    contadorPob = 0
     for i in range(len(lSelection)):
         lSelection[i]['X'] = findX(int(inp['Rango mínimo de X'].get()), int(lSelection[i]['bits'], 2))
         lSelection[i]['Y'] = findY(int(inp['Rango mínimo de Y'].get()), int(lSelection[i]['bits'], 2))
@@ -194,11 +208,18 @@ def evaluation(inp):
             else:
                 prob = getProbAcu(j)
                 aux = [float(prob), float((prob + lSelection[j]['Prob']))]
-            if randNumbers[i] >= aux[0] and randNumbers[i] <= aux[1] and contPob <= int(inp['Población máxima'].get()):
-                lSelection[j]['Conteo'] += 1
-                contPob += 1
-                # print('Se encontro',randNumbers[i], ' en aux:',aux,'\nPoblación act: ',contPob)
-                break
+            if randNumbers[i] >= aux[0] and randNumbers[i] <= aux[1] and contadorPob <= int(inp['Población inicial'].get()):
+                if contadorPob < (int(inp['Población inicial'].get())-1):
+                    # print('Se encontro',randNumbers[i], ' en aux:',aux,'\nPoblación act: ',contPob)
+                    lSelection[j]['Conteo'] += 1
+                    contPob += 1
+                    contadorPob += 1
+                    break
+                else:
+                    pos = getFitnessMaxSelec()
+                    lSelection[pos]['Conteo'] += 1
+                    contPob += 1
+                    contadorPob += 1
     printList(lSelection)
     for i in range(len(lSelection)):
         if i == 0:
