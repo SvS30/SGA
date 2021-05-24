@@ -50,17 +50,22 @@ def findY(a, decimal):
     global Dy
     return a + (decimal * Dy)
 
-def poda(pob):
+def poda(pob, pobIni):
     global lSelection
     global lGenerations
     global contPob
+    auxGen = lGenerations
+    auxGen = sorted(auxGen, key=lambda x: x['fitnessM'], reverse=True)
     for i in range(pob):
-        if lGenerations[i]['fitnessH'] > lGenerations[i]['fitnessP']:
-            dictSel = {'ID': i+1, 'bits': lGenerations[i]['bitsH'], 'decimal': int(lGenerations[i]['bitsH'], 2), 'X': 0, 'Y': 0, 'Fitness': 0, 'Prob': 0, 'Conteo': 0}
+        if auxGen[i]['fitnessP'] > auxGen[i]['fitnessH']:
+            dictSel = {'ID': i+1, 'bits': auxGen[i]['bitsP'], 'decimal': int(auxGen[i]['bitsP'], 2), 'X': 0, 'Y': 0, 'Fitness': 0, 'Prob': 0, 'Conteo': 0}
         else:
-            dictSel = {'ID': i+1, 'bits': lGenerations[i]['bitsP'], 'decimal': int(lGenerations[i]['bitsP'], 2), 'X': 0, 'Y': 0, 'Fitness': 0, 'Prob': 0, 'Conteo': 0}
+            dictSel = {'ID': i+1, 'bits': auxGen[i]['bitsH'], 'decimal': int(auxGen[i]['bitsH'], 2), 'X': 0, 'Y': 0, 'Fitness': 0, 'Prob': 0, 'Conteo': 0}
         lSelection.append(dictSel)
         contPob += 1
+    for i in range(2, len(auxGen)):
+        dictSel = {'ID': i+1, 'bits': auxGen[i]['bitsH'], 'decimal': int(auxGen[i]['bitsH'], 2), 'X': 0, 'Y': 0, 'Fitness': 0, 'Prob': 0, 'Conteo': 0}
+        lSelection.append(dictSel)
     print('------------------ Poda #', contGen+1, ' ------------------')
     printList(lGenerations)
     lGenerations.clear()
@@ -114,7 +119,7 @@ def mutation(inp):
             lGenerations[i]['bitsM'] = lGenerations[i]['bitsP']
     printList(lMutation)
     cleanLists()
-    poda(int(inp['Población inicial'].get()))
+    poda(2, int(inp['Población inicial'].get()))
 
 def crossover(inp):
     global lCrossover
