@@ -18,3 +18,5 @@ Luego de esto, ejecuta `principal.py`.
 
 ### Criterio de aceptación
 En esta problematica se presenta la opción de maximizar, lo que indica que nuestros mejores individuos serán los que tengan mejor puntaje evaluandolos en la función, a este puntaje se le denomina como **Fitness**.
+___
+Si desea saber más, revise la [[Wiki|Home]].
